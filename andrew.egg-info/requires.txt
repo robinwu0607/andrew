@@ -1,2 +1,0 @@
-cryptography==2.8
-paramiko==2.6.0
