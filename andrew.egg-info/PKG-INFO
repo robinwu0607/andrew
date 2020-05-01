@@ -1,0 +1,19 @@
+Metadata-Version: 1.2
+Name: andrew
+Version: 0.0.1
+Summary: Andrew - Paramiko based Remote Execution
+Home-page: https://github.com/
+Author: Robin Wu
+Author-email: robinwu.qw@gmail.com
+License: UNKNOWN
+Description: ## Andrew - Remote Execution
+Keywords: Paramiko Fabric Ansible
+Platform: Linux
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Maintenance Tools
+Classifier: Topic :: Functional Testing :: Platform
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Requires-Python: >=3.6.7

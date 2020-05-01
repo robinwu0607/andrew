@@ -1,0 +1,13 @@
+MANIFEST.in
+README.md
+setup.cfg
+setup.py
+andrew/__init__.py
+andrew/conn.py
+andrew/drew.py
+andrew/logger.py
+andrew.egg-info/PKG-INFO
+andrew.egg-info/SOURCES.txt
+andrew.egg-info/dependency_links.txt
+andrew.egg-info/requires.txt
+andrew.egg-info/top_level.txt
