@@ -1,8 +1,8 @@
-from andrew import connection
+from andrew import conn
 
-an = connection.Connection("10.167.16.43", username="genius", password="genius")
+an = conn.CONN("10.167.16.43", "genius", password="genius")
 
-an.set_logger("/tmp/test.log")
+# an.set_logger("/tmp/test.log")
 an.open()
 
 #

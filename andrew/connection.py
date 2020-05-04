@@ -1,13 +1,12 @@
 import paramiko
 import time
-import getpass
 import threading
 
 __author__ = "Robin Wu"
 
 
-class Conn(object):
-    def __init__(self, host, **kwargs):
+class CONN(object):
+    def __init__(self, host, username, **kwargs):
         """
 
         :param name:
@@ -15,35 +14,25 @@ class Conn(object):
         """
         self.__status = "close"
         self.__buf = ""
-        self.__username = host
         self.__lock = threading.Lock()
         self.__thread = threading.Thread(None, self.__read_thread, host, (), {}, daemon=True)
         self.__timeout = kwargs.get("timeout", 300)
 
-        self.__username = kwargs.get("username", None)
+        self.__username = username
         self.__password = kwargs.get("password", None)
         self.__host = host
         self.__port = kwargs.get("port", 22)
-        pkey = kwargs.get("pkey", "")
+        self.__allow_agent = kwargs.get("allow_agent", True)
+        self.__echo = kwargs.get("echo", False)
         self.__ssh = None
         self.__chan = None
         self.__logger = None
         self.__sftp = None
 
-        if pkey:
-            self.__pkey = paramiko.RSAKey.from_private_key_file(pkey)
-        else:
-            self.__pkey = None
-
         if not self.__username:
             self.__username = input("Input username[{}]: ".format(host))
             if not self.__username.strip():
                 raise Exception("You should provide username for [{}]".format(host))
-
-        if not self.__pkey and not self.__password:
-            self.__password = getpass.getpass("You did not set private key, input password[{}]: ".format(self.__username))
-            if not self.__password.strip():
-                raise Exception("You should provide password for [{}]".format(self.__username))
 
         self.__thread.start()
 
@@ -113,7 +102,7 @@ class Conn(object):
         try:
             self.__ssh = paramiko.SSHClient()
             self.__ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.__ssh.connect(self.__host, self.__port, self.__username, self.__password, pkey=self.__pkey)
+            self.__ssh.connect(self.__host, self.__port, self.__username, self.__password, allow_agent=self.__allow_agent)
             self.__chan = self.__ssh.invoke_shell()
         except Exception as e:
             print(e)
