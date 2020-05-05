@@ -18,15 +18,16 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Andrew'
-copyright = '2020, Andrew Wu'
-author = 'Andrew Wu'
+copyright = '2020, Robin Wu'
+author = 'Robin Wu'
 
 # The full version, including alpha/beta/rc tags
 release = '0.0.1'
 
-
+# html_logo = '_static/logo.png'
 # -- General configuration ---------------------------------------------------
 
+master_doc = 'contents'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.

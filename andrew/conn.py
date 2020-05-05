@@ -177,7 +177,7 @@ class CONN(object):
         if not expect:
             return False
         buf = self.__buf
-        expect_list = [expect] if isinstance(expect, str) else expect
+        expect_list = expect if isinstance(expect, list) else [expect]
         for phrase in expect_list:
             if buf.find(phrase) >= 0:
                 break
