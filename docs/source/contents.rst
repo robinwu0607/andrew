@@ -83,14 +83,14 @@ The Connection log will be saved into ``/tmp/conn.log``, if you ``cat`` it, you 
    >>> log.info("{} - {}".format(host, an.buf.splitlines()[0]))
    <LogRecord: EVENT, 20, test.py, 17, "web1 - 34%">
 
-The Connection log will be saved into ``/tmp/event.log``, if you ``cat`` it, you could see::
+The Event log will be saved into ``/tmp/event.log``, if you ``cat`` it, you could see::
 
    [root@web tests]# cat /tmp/event.log
    Mon 04 May 2020 16:44:18|INFO    : web1 - 34%
 
 
-How to Install
-----------------
+How is it Installed?
+-----------------------
 It is quite easy to install ``Andrew``::
 
    git clone https://github.com/andrew-wu2015/andrew.git

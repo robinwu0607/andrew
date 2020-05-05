@@ -21,11 +21,11 @@ Andrew provides a new method to interact with remote Shell **continuously**.
    web1 - 34%
 ```
 Andrew defined the **expectphrase** & **timeout** in **send()** method, once got ``]$`` within ``60s``, the **send()** finished.
-``an.buf`` contains the all output from remote console.
+``an.buf`` contains all output from remote host.
 
 How is it used?
 -----------------
-Create a function contains some commands.
+* Define a function which contains some commands.
 ```
    >>> def check_system(host: str) -> None:
    ...   an = conn.CONN(host, "username", password="pswd", open=True)
@@ -40,7 +40,7 @@ Create a function contains some commands.
    ...
    >>>
 ```
-* Involve the function on individual hosts.
+* Involve the function on individual host.
 ```
    >>> check_system("web1")
 ```
@@ -57,7 +57,7 @@ Create a function contains some commands.
    >>> from multiprocessing import Pool
    >>> hosts = ["web1", "web2", "web3"]
    >>> with Pool(len(hosts)) as p:
-   ...  p.map(check_memory, hosts)
+   ...  p.map(check_system, hosts)
    ...
    >>>
 ```
@@ -72,7 +72,7 @@ Create a function contains some commands.
    >>> print("{} - {}".format(host, an.buf.splitlines()[0]))
    web1 - 34%
 ```
-The Connection log will be saved into ``/tmp/conn.log``, if you ``cat`` it, you could see::
+The Connection log will be saved into ``/tmp/conn.log``, if you ``cat`` it, you could see:
 ```
    [root@web tests]# cat /tmp/conn.log
    [user@gitlab-server ~]$ df -h / | tail -n1 | awk '{print $5}'
@@ -91,15 +91,15 @@ The Connection log will be saved into ``/tmp/conn.log``, if you ``cat`` it, you 
    >>> log.info("{} - {}".format(host, an.buf.splitlines()[0]))
    <LogRecord: EVENT, 20, test.py, 17, "web1 - 34%">
 ```
-The Connection log will be saved into ``/tmp/event.log``, if you ``cat`` it, you could see::
+The Event log will be saved into ``/tmp/event.log``, if you ``cat`` it, you could see:
 ```
    [root@web tests]# cat /tmp/event.log
    Mon 04 May 2020 16:44:18|INFO    : web1 - 34%
 ```
 
-How to Install
-----------------
-It is quite easy to install ``Andrew``::
+How is it Installed?
+----------------------
+It is quite easy to install ``Andrew``:
 ```
    git clone https://github.com/andrew-wu2015/andrew.git
    cd andrew
