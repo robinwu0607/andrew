@@ -1,8 +1,5 @@
 import argparse
 
-__author__ = "Robin Wu"
-
-
 parser = argparse.ArgumentParser(description="""Andrew CLI Interface Helper""")
 
 parser.add_argument("--host", dest="Destination Host name or IP address")

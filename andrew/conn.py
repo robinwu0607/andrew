@@ -1,12 +1,11 @@
 import paramiko
 import time
 import threading
-
-__author__ = "Robin Wu"
+from typing import Union, List
 
 
 class CONN(object):
-    def __init__(self, host, username, **kwargs):
+    def __init__(self, host: str, username: str, **kwargs) -> None:
         """
 
         :param name:
@@ -14,6 +13,7 @@ class CONN(object):
         """
         self.__status = "close"
         self.__buf = ""
+        self.__username = host
         self.__lock = threading.Lock()
         self.__thread = threading.Thread(None, self.__read_thread, host, (), {}, daemon=True)
         self.__timeout = kwargs.get("timeout", 300)
@@ -38,33 +38,41 @@ class CONN(object):
 
         if kwargs.get("open", False):
             self.open()
+        return
 
     @property
-    def buf(self):
+    def buf(self) -> str:
         """
 
         :return:
         """
         # return self.__buf
-        # remove the cmd sent.
+        # remove the cmd sent
         return "\n\r".join(i for i in self.__buf.strip().splitlines()[1:])
 
     @property
-    def status(self):
+    def host(self) -> str:
+        """
+
+        :return:
+        """
+        return self.__host
+
+    @property
+    def status(self) -> str:
         """
 
         :return:
         """
         return self.__status
 
-    def set_logger(self, log):
+    def set_logger(self, log: str) -> None:
         """
         :param log: log absolute path, eg: "/tmp/log.txt"”" for linux, "C:\\log.txt" for windows.
         :return:
         """
-        # TODO: check if current username create path or not.
         from . import logger
-        self.__logger = logger.get_logger(log)
+        self.__logger = logger.get_conn_logger(log)
         return
 
     def __read_thread(self):
@@ -77,22 +85,27 @@ class CONN(object):
             data = self.__read()
             if not data:
                 continue
-            self.__lock.acquire()
-            self.__buf += data
-            self.__on_data_received(data)
-            self.__lock.release()
+            try:
+                self.__lock.acquire()
+                self.__buf += data
+                self.__on_data_received(data)
+            except Exception as e:
+                pass
+            finally:
+                self.__lock.release()
 
     def __on_data_received(self, msg):
-        """ Once get shell log, save it to local file.
+        """ Once get log from connection, save it to local file.
 
         :param msg:
         :return:
         """
         if self.__logger:
             self.__logger.info(msg)
-        # print(msg, end="")
+        if self.__echo:
+            print(msg, end="")
 
-    def open(self):
+    def open(self) -> None:
         """
 
         :return:
@@ -102,16 +115,22 @@ class CONN(object):
         try:
             self.__ssh = paramiko.SSHClient()
             self.__ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.__ssh.connect(self.__host, self.__port, self.__username, self.__password, allow_agent=self.__allow_agent)
+            self.__ssh.connect(
+                self.__host,
+                self.__port,
+                self.__username,
+                self.__password,
+                allow_agent=self.__allow_agent,
+            )
             self.__chan = self.__ssh.invoke_shell()
         except Exception as e:
             print(e)
             raise Exception("Could not open Connection") from e
         self.__status = "open"
-        self.send("\r", expectphrase="{}@".format(self.__username), timeout=5)
+        self.send("\r", expectphrase="{}@".format(self.__username), timeout=60)
         return
 
-    def close(self):
+    def close(self) -> None:
         """
 
         :return:
@@ -149,7 +168,7 @@ class CONN(object):
     def __data_handler(msg):
         return msg.decode("UTF-8")
 
-    def received(self, expect):
+    def received(self, expect: Union[str, list]) -> bool:
         """
 
         :param expect:
@@ -158,20 +177,13 @@ class CONN(object):
         if not expect:
             return False
         buf = self.__buf
-        expect_list = []
-        if isinstance(expect, str):
-            expect_list.append(expect)
-
-        elif isinstance(expect, list):
-            expect_list = expect
-        else:
-            raise Exception('expectphrase should be a string or list, but it is {}'.format(type(expect)))
+        expect_list = [expect] if isinstance(expect, str) else expect
         for phrase in expect_list:
             if buf.find(phrase) >= 0:
                 break
         else:
             return False
-        return
+        return True
 
     def __write(self, cmd):
         """
@@ -180,13 +192,13 @@ class CONN(object):
         :return:
         """
         if "open" != self.status:
-            error = "Connection is not open yet, could not send before open it"
-            raise Exception(error)
+            msg = "Connection is not open yet, could not send before open it"
+            raise Exception(msg)
         self.__buf = ""
         self.__chan.sendall(cmd)
-        return
+        return True
 
-    def send(self, cmd="", expectphrase=None, timeout=60):
+    def send(self, cmd: str, expectphrase: Union[str, List[str]], timeout: int = 60) -> None:
         """ Send command to Connection.
         :param str cmd: the message to send
         :param str|list expectphrase: the expected phrase, should be a str or list
@@ -199,20 +211,16 @@ class CONN(object):
             return
         if timeout <= 0:
             timeout = 60
-        expect = []
-        if isinstance(expectphrase, str):
-            expect.append(expectphrase)
-        elif isinstance(expectphrase, list):
-            expect = expectphrase
-        else:
-            raise Exception("expectphrase should be a string or list, but it is {}".format(type(expectphrase)))
+        expect = [expectphrase] if isinstance(expectphrase, str) else expectphrase
+
         while (time.time() - start_time) < timeout:
             time.sleep(0.1)
             if self.received(expect):
                 return
-        raise Exception("{} Did not received {} within [{}] seconds".format(cmd, expectphrase, timeout))
+        msg = "{} Did not received {} within [{}] seconds".format(cmd.replace("\r", "\\r"), expectphrase, timeout)
+        raise Exception(msg)
 
-    def capture(self, start="", end=""):
+    def capture(self, start: str, end: str) -> str:
         """ Capture string from start to end
         :param str start: Start string
         :param str end: End string
@@ -223,14 +231,14 @@ class CONN(object):
         buf = self.__buf
         start_position = buf.find(r"{}".format(start))
         if start_position < 0:
-            return None
+            return ""
         start_position += len(start)
         end_position = buf.find(r"{}".format(end), start_position)
         if end_position < 0:
-            return None
+            return ""
         return buf[start_position: end_position].strip()
 
-    def put(self, local, remote):
+    def put(self, local: str, remote: str) -> None:
         """ Put local file to remote.
 
         :param local:
@@ -245,7 +253,7 @@ class CONN(object):
         self.__sftp.put(local, remote)
         return
 
-    def get(self, remote, local):
+    def get(self, remote: str, local: str) -> None:
         """ Get remote file to local
         :param remote:
         :param local:
