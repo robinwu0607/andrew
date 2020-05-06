@@ -41,6 +41,9 @@ class Broker(object):
         value = self.db.get(name=":".join([self.name, key]))
         return pickle.loads(value) if value else {}
 
+    def get_keys(self):
+        return self.db.keys()
+
     def delete(self, key: str):
         del self.db[":".join([self.name, key])]
         return
