@@ -5,7 +5,7 @@ import time
 POOL = r.ConnectionPool(host='localhost', port=6379, db=0)
 
 
-class Redis(object):
+class Broker(object):
     def __init__(self, name: str):
         self.name = name
         self.db = r.StrictRedis(connection_pool=POOL)
