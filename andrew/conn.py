@@ -85,8 +85,8 @@ class CONN(object):
             data = self.__read()
             if not data:
                 continue
+            self.__lock.acquire()
             try:
-                self.__lock.acquire()
                 self.__buf += data
                 self.__on_data_received(data)
             except Exception as e:
@@ -114,6 +114,7 @@ class CONN(object):
             return
         try:
             self.__ssh = paramiko.SSHClient()
+            # self.__ssh.load_system_host_keys()
             self.__ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             self.__ssh.connect(
                 self.__host,
