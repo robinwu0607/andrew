@@ -101,9 +101,9 @@ How is it Installed?
 ----------------------
 It is quite easy to install ``Andrew``:
 ```
-   git clone https://github.com/andrew-wu2015/andrew.git
+   git clone https://github.com/robinwu0607/andrew.git
    cd andrew
    python3 setup.py install
 ```
 
-That is ALL!!!
+That is it!!!
