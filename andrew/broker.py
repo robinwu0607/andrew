@@ -20,22 +20,30 @@ class Broker(object):
         return value.decode('utf-8') if value else ""
 
     def append(self, key: str, value: str):
-        self.db.append(key="-".join([self.name, key]), value=value)
+        self.db.append(key=":".join([self.name, key]), value=value)
         return
 
     def set(self, key: str, value, expire=None):
         while not self.db.setnx(self.name + '______redis', 'LOCK'):
             time.sleep(0.1)
-        self.db.set(name="-".join([self.name, key]), value=pickle.dumps(value), ex=expire)
+        self.db.set(name=":".join([self.name, key]), value=pickle.dumps(value), ex=expire)
         del self.db[self.name + '______redis']
 
-    def get(self, key: str):
-        value = self.db.get(name="-".join([self.name, key]))
+    def get_str(self, key: str):
+        value = self.db.get(name=":".join([self.name, key]))
         return pickle.loads(value) if value else ""
 
+    def get_list(self, key: str):
+        value = self.db.get(name=":".join([self.name, key]))
+        return pickle.loads(value) if value else []
+
+    def get_dict(self, key: str):
+        value = self.db.get(name=":".join([self.name, key]))
+        return pickle.loads(value) if value else {}
+
     def delete(self, key: str):
-        del self.db["-".join([self.name, key])]
+        del self.db[":".join([self.name, key])]
         return
 
-    def clean_up(self):
+    def flush(self):
         return self.db.flushall()
