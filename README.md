@@ -75,9 +75,9 @@ How is it used?
 The Connection log will be saved into ``/tmp/conn.log``, if you ``cat`` it, you could see:
 ```
    [root@web tests]# cat /tmp/conn.log
-   [user@gitlab-server ~]$ df -h / | tail -n1 | awk '{print $5}'
+   [user@web1 ~]$ df -h / | tail -n1 | awk '{print $5}'
    3%
-   [user@gitlab-server ~]$
+   [user@web1 ~]$
    ----------Connection is closed----------
 ```
 * Save Event log to local file.
