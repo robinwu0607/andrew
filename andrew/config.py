@@ -86,10 +86,10 @@ class TestContainer(object):
 
         self.connection_map = dict()
 
-        self.pre_sequence = broker.Broker(self.station_name).get_dict("PRE_SEQUENCE")
-        self.sequence_map = broker.Broker(self.station_name).get_dict("SEQUENCE_MAP")
-        self.configuration_data_map = broker.Broker(self.station_name).get_dict("CONFIGURATION_DATA")
-        self.station_connection_map = broker.Broker(self.station_name).get_dict("CONNECTION_LIST")
+        self.pre_sequence = broker.Broker(self.station_name).get("PRE_SEQUENCE", "str")
+        self.sequence_map = broker.Broker(self.station_name).get("SEQUENCE_MAP", "dict")
+        self.configuration_data_map = broker.Broker(self.station_name).get("CONFIGURATION_DATA", "dict")
+        self.station_connection_map = broker.Broker(self.station_name).get("CONNECTION_LIST", "dict")
         self.b.set("PRE_SEQUENCE", self.pre_sequence)
         self.b.set("SEQUENCE_MAP", self.sequence_map)
         self.b.set("CONFIGURATION_DATA", self.configuration_data_map)
