@@ -280,17 +280,67 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(value.get("test2"), "test.case2")
         return
 
-    def test_add_container_sync_group(self):
-        """
-        :return:
-        """
-        pass
-
     def test_add_container_configuration_data(self):
         """
+        Create Station "PCBST"
+        Create Container "UUT00"
+        1. add configuration_data "key1"/["UUT00", "UUT01"] to station, container will inherit it.
+        2. add configuration_data "key2"/["UUT00", "UUT02"] to see if it is in redis["PCBST:UUT00:CONFIGURATION_DATA"]
+        3. add configuration_data "key3"/{"hello": "world"} to see if both 1&2 in redis["PCBST:UUT00:CONFIGURATION_DATA"]
+        4. add configuration_data "key4"/"nice.job",to see if it is in redis["PCBST:UUT00:CONFIGURATION_DATA"]
+        5. add configuration_data "key1"/"great.job",to see if it is in redis["PCBST:UUT00:CONFIGURATION_DATA"]
         :return:
         """
-        pass
+        gen = config.TestConfiguration()
+        station = gen.add_station("PCBST")
+        station.add_configuration_data("key1", ["UUT00", "UUT01"])
+        container = station.add_container("UUT00")
+        # 1
+        value = pickle.loads(self.r["PCBST:CONFIGURATION_DATA"])
+        self.assertIn("key1", value)
+        self.assertEqual(value.get("key1"), ["UUT00", "UUT01"])
+        value = pickle.loads(self.r["PCBST:UUT00:CONFIGURATION_DATA"])
+        self.assertIn("key1", value)
+        self.assertEqual(value.get("key1"), ["UUT00", "UUT01"])
+        # 2
+        container.add_configuration_data("key2", ["UUT00", "UUT02"])
+        value = pickle.loads(self.r["PCBST:UUT00:CONFIGURATION_DATA"])
+        self.assertIn("key1", value)
+        self.assertEqual(value.get("key1"), ["UUT00", "UUT01"])
+        self.assertIn("key2", value)
+        self.assertEqual(value.get("key2"), ["UUT00", "UUT02"])
+        # 3
+        container.add_configuration_data("key3", {"hello": "world"})
+        value = pickle.loads(self.r["PCBST:UUT00:CONFIGURATION_DATA"])
+        self.assertIn("key1", value)
+        self.assertEqual(value.get("key1"), ["UUT00", "UUT01"])
+        self.assertIn("key2", value)
+        self.assertEqual(value.get("key2"), ["UUT00", "UUT02"])
+        self.assertIn("key3", value)
+        self.assertEqual(value.get("key3"), {"hello": "world"})
+        # 4
+        container.add_configuration_data("key4", "nice.job")
+        value = pickle.loads(self.r["PCBST:UUT00:CONFIGURATION_DATA"])
+        self.assertIn("key1", value)
+        self.assertEqual(value.get("key1"), ["UUT00", "UUT01"])
+        self.assertIn("key2", value)
+        self.assertEqual(value.get("key2"), ["UUT00", "UUT02"])
+        self.assertIn("key3", value)
+        self.assertEqual(value.get("key3"), {"hello": "world"})
+        self.assertIn("key4", value)
+        self.assertEqual(value.get("key4"), "nice.job")
+        # 5
+        container.add_configuration_data("key1", "great.job")
+        value = pickle.loads(self.r["PCBST:UUT00:CONFIGURATION_DATA"])
+        self.assertIn("key1", value)
+        self.assertEqual(value.get("key1"), "great.job")
+        self.assertIn("key2", value)
+        self.assertEqual(value.get("key2"), ["UUT00", "UUT02"])
+        self.assertIn("key3", value)
+        self.assertEqual(value.get("key3"), {"hello": "world"})
+        self.assertIn("key4", value)
+        self.assertEqual(value.get("key4"), "nice.job")
+        return
 
     def test_add_container_connection(self):
         """
