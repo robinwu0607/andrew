@@ -45,8 +45,8 @@ class TestBroker(unittest.TestCase):
         self.b1.append("UUT00", "hello")
         self.b.append("UUT00", ",")
         self.b.append("UUT00", "world")
-        self.assertEqual(self.r["TEST:UUT00"], "hello,world")
-        self.assertEqual(self.r["TEST1:UUT00"], "hello")
+        self.assertEqual(self.b.get_append("TEST:UUT00"), "hello,world")
+        self.assertEqual(self.b.get_append("TEST1:UUT00"), "hello")
         return
 
     def test_get(self):
@@ -68,11 +68,11 @@ class TestBroker(unittest.TestCase):
         self.b.set("UUT00", {})
         self.assertEqual(self.b.get("UUT00"), {})
 
-        class Test(object):
+        def test():
             pass
-        test = Test()
-        self.b.set("UUT00", test)
-        self.assertEqual(self.b.get("UUT00"), test)
+        test1 = test()
+        self.b.set("UUT00", test1)
+        self.assertEqual(self.b.get("UUT00"), test1)
         return
 
     def test_get_keys(self):

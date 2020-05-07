@@ -23,6 +23,9 @@ class Broker(object):
         self.db.append(key=":".join([self.name, key]), value=value)
         return
 
+    def get_append(self, key: str):
+        return self.db.get(name=":".join([self.name, key])).decode('utf-8')
+
     def set(self, key: str, value, expire=None):
         while not self.db.setnx(self.name + '______redis', 'LOCK'):
             time.sleep(0.1)
@@ -36,7 +39,7 @@ class Broker(object):
         return pickle.loads(value)
 
     def get_keys(self) -> list:
-        return self.db.keys()
+        return [i.decode('utf-8') for i in self.db.keys()]
 
     def delete(self, key: str):
         del self.db[":".join([self.name, key])]
