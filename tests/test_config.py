@@ -45,7 +45,7 @@ class TestConfig(unittest.TestCase):
         :return:
         """
         gen = config.TestConfiguration()
-        station = gen.add_test_station("PCBST")
+        station = gen.add_station("PCBST")
         # 1
         station.add_pre_sequence("hello.world")
         value = pickle.loads(self.r["PCBST:PRE_SEQUENCE"])
@@ -65,7 +65,7 @@ class TestConfig(unittest.TestCase):
         :return:
         """
         gen = config.TestConfiguration()
-        station = gen.add_test_station("PCBST")
+        station = gen.add_station("PCBST")
         # 1
         station.add_sequence_map("TEST1", "test.case1")
         value = pickle.loads(self.r["PCBST:SEQUENCE_MAP"])
@@ -98,7 +98,7 @@ class TestConfig(unittest.TestCase):
         :return:
         """
         gen = config.TestConfiguration()
-        station = gen.add_test_station("PCBST")
+        station = gen.add_station("PCBST")
         # 1
         station.add_sync_group("GROUP1", ["UUT00", "UUT01"])
         value = pickle.loads(self.r["PCBST:SYNC_GROUP"])
@@ -131,7 +131,7 @@ class TestConfig(unittest.TestCase):
         :return:
         """
         gen = config.TestConfiguration()
-        station = gen.add_test_station("PCBST")
+        station = gen.add_station("PCBST")
         # 1
         station.add_configuration_data("key1", ["UUT00", "UUT01"])
         value = pickle.loads(self.r["PCBST:CONFIGURATION_DATA"])
@@ -174,7 +174,7 @@ class TestConfig(unittest.TestCase):
         :return:
         """
         gen = config.TestConfiguration()
-        station = gen.add_test_station("PCBST")
+        station = gen.add_station("PCBST")
         # 1
         station.add_connection("name1", protocol="dummy", port=22, host="web1")
         value = pickle.loads(self.r["PCBST:CONNECTION_LIST"])
