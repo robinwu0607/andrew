@@ -78,7 +78,7 @@ class TestConfig(unittest.TestCase):
         self.assertIn("TEST1", value)
         self.assertEqual(value.get("TEST1"), "test.case1")
         self.assertIn("TEST2", value)
-        self.assertEqual(value.get("TEST1"), "test.case2")
+        self.assertEqual(value.get("TEST2"), "test.case2")
         # 3
         station.add_sequence_map("TEST1", "test.case3")
         value = pickle.loads(self.r["PCBST:SEQUENCE_MAP"])
