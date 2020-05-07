@@ -167,28 +167,28 @@ class TestConfig(unittest.TestCase):
     def test_add_station_connection(self):
         """
         Create Station "PCBST"
-        1. add connection "name1"/{"protocal": "dummy", "port": 22, "host": "web1"} to see if it is in redis["PCBST:CONNECTION_LIST"]
-        2. add connection "name2"/{"protocal": "telnet", "port": 22, "host": "web2"} to see if both 1&2 in redis["PCBST:CONNECTION_LIST"]
-        3. add connection "name1"/{"protocal": "ssh", "port": 22, "host": "web3"},to see if it is in redis["PCBST:CONNECTION_LIST"]
+        1. add connection "name1"/protocal="dummy", port=22, host="web1" to see if it is in redis["PCBST:CONNECTION_LIST"]
+        2. add connection "name2"/protocal="telnet", port=22, host="web2" to see if both 1&2 in redis["PCBST:CONNECTION_LIST"]
+        3. add connection "name1"/protocal="ssh", port=22, host="web3",to see if it is in redis["PCBST:CONNECTION_LIST"]
 
         :return:
         """
         gen = config.TestConfiguration()
         station = gen.add_test_station("PCBST")
         # 1
-        station.add_connection("name1", {"protocal": "dummy", "port": 22, "host": "web1"})
+        station.add_connection("name1", protocal="dummy", port=22, host="web1")
         value = pickle.loads(self.r["PCBST:CONNECTION_LIST"])
         self.assertIn("NAME1", value)
         self.assertEqual(value.get("NAME1"), {"protocal": "dummy", "port": 22, "host": "web1"})
         # 2
-        station.add_connection("name2", {"protocal": "telnet", "port": 22, "host": "web2"})
+        station.add_connection("name2", protocal="telnet", port=22, host="web2")
         value = pickle.loads(self.r["PCBST:CONNECTION_LIST"])
         self.assertIn("NAME1", value)
         self.assertEqual(value.get("NAME1"), {"protocal": "dummy", "port": 22, "host": "web1"})
         self.assertIn("NAME2", value)
         self.assertEqual(value.get("NAME2"), {"protocal": "telnet", "port": 22, "host": "web2"})
         # 3
-        station.add_sync_group("name1", {"protocal": "ssh", "port": 22, "host": "web3"})
+        station.add_sync_group("name1", protocal="ssh", port=22, host="web3")
         value = pickle.loads(self.r["PCBST:CONNECTION_LIST"])
         # print(value)
         self.assertIn("NAME1", value)
