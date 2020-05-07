@@ -15,7 +15,7 @@ class TestConfiguration(object):
     def __repr__(self):
         return "Andrew Configuration"
 
-    def add_test_station(self, name: str):
+    def add_station(self, name: str):
         station_name = name.upper()
         if not checker.match(station_name):
             raise Exception("Station name should not contain special characters - [{}]".format(station_name))

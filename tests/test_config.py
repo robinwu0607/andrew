@@ -18,20 +18,20 @@ class TestConfig(unittest.TestCase):
         """ Test add Test Station.
         1. add a station "PCBST" to see if it is in redis["CONFIGURATION:STATION_LIST"]
         2. add another station "PCBP2" to see if 1&2 are in redis["CONFIGURATION:STATION_LIST"]
-        3. add "PCBST" again, to see if `add_test_station` filter the duplicated station name.
+        3. add "PCBST" again, to see if `add_station` filter the duplicated station name.
 
         :return:
         """
         gen = config.TestConfiguration()
-        station = gen.add_test_station("PCBST")
+        station = gen.add_station("PCBST")
         value = pickle.loads(self.r["CONFIGURATION:STATION_LIST"])
         self.assertEqual(value, {"PCBST": False})
         #
-        station = gen.add_test_station("PCBP2")
+        station = gen.add_station("PCBP2")
         value = pickle.loads(self.r["CONFIGURATION:STATION_LIST"])
         self.assertEqual(value, {"PCBST": False, "PCBP2": False})
         #
-        station = gen.add_test_station("PCBST")
+        station = gen.add_station("PCBST")
         value = pickle.loads(self.r["CONFIGURATION:STATION_LIST"])
         self.assertEqual(value, {"PCBST": False, "PCBP2": False})
         return
@@ -199,11 +199,27 @@ class TestConfig(unittest.TestCase):
 
     def test_add_container(self):
         """ Test Add Test Container.
-        1. add a container "UUT00" to see if it is in redis["PCBST:CONTAINER_LIST"]
-
+        Create Station "PCBST"
+        1. add container "UUT00" to see if it is in redis["PCBST:CONTAINER_LIST"]
+        2. add container "UUT01" to see if 1&2 are in redis["PCBST:CONTAINER_LIST"]
+        3. add container "UUT00" to see if `add_container` filter the duplicated station name.
         :return:
         """
-        pass
+        gen = config.TestConfiguration()
+        station = gen.add_station("PCBST")
+        # 1
+        station.add_container("UUT00")
+        value = pickle.loads(self.r["PCBST:CONTAINER_LIST"])
+        self.assertEqual(value, {"PCBST:UUT00": False})
+        # 2
+        station.add_container("UUT01", disabled=True)
+        value = pickle.loads(self.r["PCBST:CONTAINER_LIST"])
+        self.assertEqual(value, {"PCBST:UUT00": False, "PCBST:UUT01": True})
+        # 3
+        station.add_container("UUT00", disabled=True)
+        value = pickle.loads(self.r["PCBST:CONTAINER_LIST"])
+        self.assertEqual(value, {"PCBST:UUT00": True, "PCBST:UUT01": True})
+        return
 
 
 if __name__ == "__main__":
