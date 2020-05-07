@@ -221,6 +221,53 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(value, {"PCBST:UUT00": True, "PCBST:UUT01": True})
         return
 
+    def test_add_container_pre_sequence(self):
+        """
+        Create Station "PCBST"
+        Create Container "UUT00"
+        1. add pre sequence "hello.world" to station, container would inherit it.
+        2. add pre sequence "good.job" to container, container will rewrite it.
+        :return:
+        """
+        gen = config.TestConfiguration()
+        station = gen.add_station("PCBST")
+        station.add_pre_sequence("hello.world")
+        value = pickle.loads(self.r["PCBST:PRE_SEQUENCE"])
+        self.assertEqual(value, "hello.world")
+        value = pickle.loads(self.r["PCBST:UUT00:PRE_SEQUENCE"])
+        self.assertEqual(value, "hello.world")
+
+        container = station.add_container("UUT00")
+        station.add_pre_sequence("good.job")
+        value = pickle.loads(self.r["PCBST:UUT00:PRE_SEQUENCE"])
+        self.assertEqual(value, "good.job")
+
+
+        return
+
+    def test_add_container_sequence_map(self):
+        """
+        :return:
+        """
+        pass
+
+    def test_add_container_sync_group(self):
+        """
+        :return:
+        """
+        pass
+
+    def test_add_container_configuration_data(self):
+        """
+        :return:
+        """
+        pass
+
+    def test_add_container_connection(self):
+        """
+        :return:
+        """
+        pass
 
 if __name__ == "__main__":
     unittest.main()

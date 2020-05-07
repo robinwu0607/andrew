@@ -84,10 +84,15 @@ class TestContainer(object):
         self.container_name = container_name
         self.b = broker.Broker(":".join([self.station_name, self.container_name]).upper())
 
+        self.connection_map = dict()
+
+        self.pre_sequence = broker.Broker(self.station_name).get_dict("PRE_SEQUENCE")
         self.sequence_map = broker.Broker(self.station_name).get_dict("SEQUENCE_MAP")
         self.configuration_data_map = broker.Broker(self.station_name).get_dict("CONFIGURATION_DATA")
         self.station_connection_map = broker.Broker(self.station_name).get_dict("CONNECTION_LIST")
-        self.connection_map = dict()
+        self.b.set("PRE_SEQUENCE", self.pre_sequence)
+        self.b.set("SEQUENCE_MAP", self.sequence_map)
+        self.b.set("CONFIGURATION_DATA", self.configuration_data_map)
 
     def add_sequence_map(self, name: str, sequence_definition: str):
         self.sequence_map.update({name: sequence_definition})
