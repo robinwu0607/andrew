@@ -1,5 +1,6 @@
 import unittest
 import redis
+import pickle
 
 from andrew import config
 
@@ -10,10 +11,9 @@ class TestConfig(unittest.TestCase):
 
     def setUp(self):
         self.r = redis.Redis("localhost", 6379)
-        pass
 
     def tearDown(self):
-        pass
+        del self.r
 
     def test_add_station(self):
         """ Test add Test Station.
@@ -25,16 +25,19 @@ class TestConfig(unittest.TestCase):
         """
         gen = config.TestConfiguration()
         self.station = gen.add_test_station("PCBST")
-        print(self.r["CONFIGURATION:STATION_LIST"])
-        self.assertEqual(self.r["CONFIGURATION:STATION_LIST"], {"PCBST": False})
+        value = pickle.loads(self.r["CONFIGURATION:STATION_LIST"])
+        print(value)
+        self.assertEqual(value, {"PCBST": False})
         #
         self.station = gen.add_test_station("PCBP2")
-        print(self.r["CONFIGURATION:STATION_LIST"])
-        self.assertEqual(self.r["CONFIGURATION:STATION_LIST"], {"PCBST": False, "PCBP2": False})
+        value = pickle.loads(self.r["CONFIGURATION:STATION_LIST"])
+        print(value)
+        self.assertEqual(value, {"PCBST": False, "PCBP2": False})
         #
         self.station = gen.add_test_station("PCBST")
-        print(self.r["CONFIGURATION:STATION_LIST"])
-        self.assertEqual(self.r["CONFIGURATION:STATION_LIST"], {"PCBST": False, "PCBP2": False})
+        value = pickle.loads(self.r["CONFIGURATION:STATION_LIST"])
+        print(value)
+        self.assertEqual(value, {"PCBST": False, "PCBP2": False})
 
 
 if __name__ == "__main__":
