@@ -83,7 +83,7 @@ class TestConfig(unittest.TestCase):
         self.assertIn("TEST1", value)
         self.assertEqual(value.get("TEST1"), "test.case3")
         self.assertIn("TEST2", value)
-        self.assertEqual(value.get("TEST1"), "test.case2")
+        self.assertEqual(value.get("TEST2"), "test.case2")
         return
 
     def test_add_station_sync_group(self):
