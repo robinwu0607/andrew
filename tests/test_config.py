@@ -24,17 +24,14 @@ class TestConfig(unittest.TestCase):
         gen = config.TestConfiguration()
         station = gen.add_test_station("PCBST")
         value = pickle.loads(self.r["CONFIGURATION:STATION_LIST"])
-        print(value)
         self.assertEqual(value, {"PCBST": False})
         #
         station = gen.add_test_station("PCBP2")
         value = pickle.loads(self.r["CONFIGURATION:STATION_LIST"])
-        print(value)
         self.assertEqual(value, {"PCBST": False, "PCBP2": False})
         #
         station = gen.add_test_station("PCBST")
         value = pickle.loads(self.r["CONFIGURATION:STATION_LIST"])
-        print(value)
         self.assertEqual(value, {"PCBST": False, "PCBP2": False})
         return
 
