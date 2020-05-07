@@ -152,7 +152,7 @@ class TestConfig(unittest.TestCase):
         self.assertIn("key2", value)
         self.assertEqual(value.get("key2"), {"hello": "world"})
         self.assertIn("key3", value)
-        self.assertEqual(value.get("key2"), "nice.job")
+        self.assertEqual(value.get("key3"), "nice.job")
         # 4
         station.add_configuration_data("key1", "great.job")
         value = pickle.loads(self.r["PCBST:CONFIGURATION_DATA"])
@@ -161,7 +161,7 @@ class TestConfig(unittest.TestCase):
         self.assertIn("key2", value)
         self.assertEqual(value.get("key2"), {"hello": "world"})
         self.assertIn("key3", value)
-        self.assertEqual(value.get("key2"), "nice.job")
+        self.assertEqual(value.get("key3"), "nice.job")
         return
 
     def test_add_station_connection(self):
