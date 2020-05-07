@@ -344,9 +344,36 @@ class TestConfig(unittest.TestCase):
 
     def test_add_container_connection(self):
         """
+        Create Station "PCBST"
+        Create Container "UUT00"
+        1. add connection "name1"/protocol="dummy", port=22, host="web1" to station, container share it.
+            will find connection from ["PCBST:CONNECTION_LIST"] & ["PCBST:UUT00:CONNECTION_LIST"]
+        2. add connection "name3"/protocol="telnet", port=22, host="web2" to container,
+            will find connection from ["PCBST:UUT00:CONNECTION_LIST"]
         :return:
         """
-        pass
+        gen = config.TestConfiguration()
+        station = gen.add_station("PCBST")
+        station.add_sequence_map("TEST1", "test.case1")
+        station.add_connection("name1", protocol="dummy", port=22, host="web1")
+        container = station.add_container("UUT00")
+        # 1
+        value = pickle.loads(self.r["PCBST:CONNECTION_LIST"])
+        self.assertIn("NAME1", value)
+        self.assertEqual(value.get("NAME1"), {"protocol": "dummy", "port": 22, "host": "web1", "shared_conn": "PCBST:NAME1"})
+        container.add_connection("name2", shared_conn="name1")
+        value = pickle.loads(self.r["PCBST:UUT00:CONNECTION_LIST"])
+        self.assertIn("NAME2", value)
+        self.assertEqual(value.get("NAME2"), {"protocol": "dummy", "port": 22, "host": "web1", "shared_conn": "PCBST:NAME1"})
+        # 2
+        container.add_connection("name3", protocol="telnet", port=22, host="web2")
+        value = pickle.loads(self.r["PCBST:UUT00:CONNECTION_LIST"])
+        self.assertIn("NAME2", value)
+        self.assertEqual(value.get("NAME2"), {"protocol": "dummy", "port": 22, "host": "web1", "shared_conn": "PCBST:NAME1"})
+        self.assertIn("NAME3", value)
+        self.assertEqual(value.get("NAME3"), {"protocol": "telnet", "port": 22, "host": "web2"})
+        return
+
 
 if __name__ == "__main__":
     unittest.main()
