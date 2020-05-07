@@ -192,7 +192,7 @@ class TestConfig(unittest.TestCase):
         value = pickle.loads(self.r["PCBST:CONNECTION_LIST"])
         # print(value)
         self.assertIn("NAME1", value)
-        self.assertEqual(value.get("GROUP1"), {"protocol": "ssh", "port": 22, "host": "web3", "shared_conn": "PCBST:NAME1"})
+        self.assertEqual(value.get("NAME1"), {"protocol": "ssh", "port": 22, "host": "web3", "shared_conn": "PCBST:NAME1"})
         self.assertIn("NAME2", value)
         self.assertEqual(value.get("NAME2"), {"protocol": "telnet", "port": 22, "host": "web2", "shared_conn": "PCBST:NAME2"})
         return
