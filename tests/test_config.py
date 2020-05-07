@@ -382,6 +382,55 @@ class TestConfig(unittest.TestCase):
 
         return
 
+    def test_config_process(self):
+        """
+        Simulate end user to create a simple configuration. it contains:
+        2 x Station - "PCBST" & "PCBP2"
+        Each Station - 2 x Containers - "UUT00" & "UUT01"
+        Each Container - 2 Connections - "UUT" & "POWER"
+        :return:
+        """
+        gen = config.TestConfiguration()
+        station = gen.add_station("PCBST")
+        for c in ["UUT00", "UUT01"]:
+            container = station.add_container(c)
+            for conn in ["UUT", "POWER"]:
+                container.add_connection(conn, protocol="telnet", port=22, host="web2")
+
+        station = gen.add_station("PCBP2")
+        for c in ["UUT00", "UUT01"]:
+            container = station.add_container(c)
+            for conn in ["UUT", "POWER"]:
+                container.add_connection(conn, protocol="telnet", port=22, host="web2")
+
+        value = pickle.loads(self.r["PCBST:CONTAINER_LIST"])
+        self.assertEqual(value, {"PCBST:UUT00": False, "PCBST:UUT01": False})
+        value = pickle.loads(self.r["PCBP2:CONTAINER_LIST"])
+        self.assertEqual(value, {"PCBP2:UUT00": False, "PCBP2:UUT01": False})
+        #
+        value = pickle.loads(self.r["PCBST:UUT00:CONNECTION_LIST"])
+        self.assertEqual(value, {
+            "PCBST:UUT00:UUT": {"protocol": "telnet", "port": 22, "host": "web2"},
+            "PCBST:UUT00:POWER": {"protocol": "telnet", "port": 22, "host": "web2"},
+        })
+        value = pickle.loads(self.r["PCBST:UUT01:CONNECTION_LIST"])
+        self.assertEqual(value, {
+            "PCBST:UUT01:UUT": {"protocol": "telnet", "port": 22, "host": "web2"},
+            "PCBST:UUT01:POWER": {"protocol": "telnet", "port": 22, "host": "web2"},
+        })
+        #
+        value = pickle.loads(self.r["PCBP2:UUT00:CONNECTION_LIST"])
+        self.assertEqual(value, {
+            "PCBP2:UUT00:UUT": {"protocol": "telnet", "port": 22, "host": "web2"},
+            "PCBP2:UUT00:POWER": {"protocol": "telnet", "port": 22, "host": "web2"},
+        })
+        value = pickle.loads(self.r["PCBP2:UUT01:CONNECTION_LIST"])
+        self.assertEqual(value, {
+            "PCBP2:UUT01:UUT": {"protocol": "telnet", "port": 22, "host": "web2"},
+            "PCBP2:UUT01:POWER": {"protocol": "telnet", "port": 22, "host": "web2"},
+        })
+        return
+
 
 if __name__ == "__main__":
     unittest.main()
