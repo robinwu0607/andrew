@@ -16,7 +16,7 @@ class TestConfig(unittest.TestCase):
     def test_add_station(self):
         """ Test add Test Station.
         1. add a station "PCBST" to see if it is in redis["CONFIGURATION:STATION_LIST"]
-        2. add another station "PCBP2" to see if it is in redis["CONFIGURATION:STATION_LIST"]
+        2. add another station "PCBP2" to see if 1&2 are in redis["CONFIGURATION:STATION_LIST"]
         3. add "PCBST" again, to see if `add_test_station` filter the duplicated station name.
 
         :return:
@@ -70,18 +70,22 @@ class TestConfig(unittest.TestCase):
         # 1
         station.add_sequence_map("TEST1", "test.case1")
         value = pickle.loads(self.r["PCBST:SEQUENCE_MAP"])
-        self.assertIn({"TEST1": "test.case1"}, value)
+        self.assertIn("TEST1", value)
+        self.assertEqual(value.get("TEST1"), "test.case1")
         # 2
         station.add_sequence_map("TEST2", "test.case2")
         value = pickle.loads(self.r["PCBST:SEQUENCE_MAP"])
-        self.assertIn({"TEST1": "test.case1"}, value)
-        self.assertIn({"TEST2": "test.case2"}, value)
+        self.assertIn("TEST1", value)
+        self.assertEqual(value.get("TEST1"), "test.case1")
+        self.assertIn("TEST2", value)
+        self.assertEqual(value.get("TEST1"), "test.case2")
         # 3
         station.add_sequence_map("TEST1", "test.case3")
         value = pickle.loads(self.r["PCBST:SEQUENCE_MAP"])
-        self.assertNotIn({"TEST1": "test.case1"}, value)
-        self.assertIn({"TEST2": "test.case2"}, value)
-        self.assertIn({"TEST1": "test.case3"}, value)
+        self.assertIn("TEST1", value)
+        self.assertEqual(value.get("TEST1"), "test.case3")
+        self.assertIn("TEST2", value)
+        self.assertEqual(value.get("TEST1"), "test.case2")
         return
 
     def test_add_station_sync_group(self):
