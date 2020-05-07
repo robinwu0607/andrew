@@ -232,13 +232,14 @@ class TestConfig(unittest.TestCase):
         gen = config.TestConfiguration()
         station = gen.add_station("PCBST")
         station.add_pre_sequence("hello.world")
+        container = station.add_container("UUT00")
+
         value = pickle.loads(self.r["PCBST:PRE_SEQUENCE"])
         self.assertEqual(value, "hello.world")
         value = pickle.loads(self.r["PCBST:UUT00:PRE_SEQUENCE"])
         self.assertEqual(value, "hello.world")
 
-        container = station.add_container("UUT00")
-        station.add_pre_sequence("good.job")
+        container.add_pre_sequence("good.job")
         value = pickle.loads(self.r["PCBST:UUT00:PRE_SEQUENCE"])
         self.assertEqual(value, "good.job")
 
