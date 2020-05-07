@@ -179,22 +179,22 @@ class TestConfig(unittest.TestCase):
         station.add_connection("name1", protocol="dummy", port=22, host="web1")
         value = pickle.loads(self.r["PCBST:CONNECTION_LIST"])
         self.assertIn("NAME1", value)
-        self.assertEqual(value.get("NAME1"), {"protocal": "dummy", "port": 22, "host": "web1"})
+        self.assertEqual(value.get("NAME1"), {"protocol": "dummy", "port": 22, "host": "web1", "shared_conn": "PCBST:NAME1"})
         # 2
         station.add_connection("name2", protocol="telnet", port=22, host="web2")
         value = pickle.loads(self.r["PCBST:CONNECTION_LIST"])
         self.assertIn("NAME1", value)
-        self.assertEqual(value.get("NAME1"), {"protocal": "dummy", "port": 22, "host": "web1"})
+        self.assertEqual(value.get("NAME1"), {"protocol": "dummy", "port": 22, "host": "web1", "shared_conn": "PCBST:NAME1"})
         self.assertIn("NAME2", value)
-        self.assertEqual(value.get("NAME2"), {"protocal": "telnet", "port": 22, "host": "web2"})
+        self.assertEqual(value.get("NAME2"), {"protocol": "telnet", "port": 22, "host": "web2", "shared_conn": "PCBST:NAME2"})
         # 3
         station.add_sync_group("name1", protocol="ssh", port=22, host="web3")
         value = pickle.loads(self.r["PCBST:CONNECTION_LIST"])
         # print(value)
         self.assertIn("NAME1", value)
-        self.assertEqual(value.get("GROUP1"), {"protocal": "ssh", "port": 22, "host": "web3"})
+        self.assertEqual(value.get("GROUP1"), {"protocol": "ssh", "port": 22, "host": "web3", "shared_conn": "PCBST:NAME1"})
         self.assertIn("NAME2", value)
-        self.assertEqual(value.get("NAME2"), {"protocal": "telnet", "port": 22, "host": "web2"})
+        self.assertEqual(value.get("NAME2"), {"protocol": "telnet", "port": 22, "host": "web2", "shared_conn": "PCBST:NAME2"})
         return
 
     def test_add_container(self):
