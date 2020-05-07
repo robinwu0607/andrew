@@ -54,39 +54,25 @@ class TestBroker(unittest.TestCase):
         if get nothing, then nothing is ""
         :return:
         """
+        self.b.delete("UUT00")
+        self.assertEqual(self.b.get("UUT00", "str"), "")
+        self.assertEqual(self.b.get("UUT00", "list"), [])
+        self.assertEqual(self.b.get("UUT00", "dict"), {})
+
+        self.b.set("UUT00", "")
+        self.assertEqual(self.b.get("UUT00"), "")
+        self.b.set("UUT00", None)
         self.assertEqual(self.b.get("UUT00"), None)
-        self.b.set("UUT00", ["LIST"])
-        self.assertEqual(self.b.get("UUT00"), ["LIST"])
-        return
+        self.b.set("UUT00", [])
+        self.assertEqual(self.b.get("UUT00"), [])
+        self.b.set("UUT00", {})
+        self.assertEqual(self.b.get("UUT00"), {})
 
-    def test_get_str(self):
-        """
-        if get nothing, then nothing is ""
-        :return:
-        """
-        self.assertEqual(self.b.get_str("UUT00"), "")
-        self.b.set("UUT00", ["LIST"])
-        self.assertEqual(self.b.get_str("UUT00"), ["LIST"])
-        return
-
-    def test_get_list(self):
-        """
-        if get nothing, then nothing is []
-        :return:
-        """
-        self.assertEqual(self.b.get_list("UUT00"), [])
-        self.b.set("UUT00", ["LIST"])
-        self.assertEqual(self.b.get_list("UUT00"), ["LIST"])
-        return
-
-    def test_get_dict(self):
-        """
-        if get noting, then nothing is {}
-        :return:
-        """
-        self.assertEqual(self.b.get_dict("UUT00"), {})
-        self.b.set("UUT00", ["LIST"])
-        self.assertEqual(self.b.get_dict("UUT00"), ["LIST"])
+        class Test(object):
+            pass
+        test = Test()
+        self.b.set("UUT00", test)
+        self.assertEqual(self.b.get("UUT00"), test)
         return
 
     def test_get_keys(self):
