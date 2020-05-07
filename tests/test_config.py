@@ -350,6 +350,7 @@ class TestConfig(unittest.TestCase):
             will find connection from ["PCBST:CONNECTION_LIST"] & ["PCBST:UUT00:CONNECTION_LIST"]
         2. add connection "name3"/protocol="telnet", port=22, host="web2" to container,
             will find connection from ["PCBST:UUT00:CONNECTION_LIST"]
+        3. add another container "UUT01", repeat item 1.
         :return:
         """
         gen = config.TestConfiguration()
@@ -372,6 +373,13 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(value.get("PCBST:UUT00:NAME2"), {"protocol": "dummy", "port": 22, "host": "web1", "shared_conn": "PCBST:NAME1"})
         self.assertIn("PCBST:UUT00:NAME3", value)
         self.assertEqual(value.get("PCBST:UUT00:NAME3"), {"protocol": "telnet", "port": 22, "host": "web2"})
+        # 3
+        container = station.add_container("UUT00")
+        container.add_connection("name4", shared_conn="name1")
+        value = pickle.loads(self.r["PCBST:UUT01:CONNECTION_LIST"])
+        self.assertIn("PCBST:UUT01:NAME4", value)
+        self.assertEqual(value.get("PCBST:UUT01:NAME4"), {"protocol": "dummy", "port": 22, "host": "web1", "shared_conn": "PCBST:NAME1"})
+
         return
 
 
