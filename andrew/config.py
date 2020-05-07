@@ -104,7 +104,7 @@ class TestContainer(object):
         return
 
     def add_configuration_data(self, key: str, value):
-        self.configuration_data_map.update({key, value})
+        self.configuration_data_map.update({key: value})
         self.b.set("CONFIGURATION_DATA", self.configuration_data_map)
         return
 
