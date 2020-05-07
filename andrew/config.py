@@ -39,7 +39,7 @@ class TestStation(object):
         self.b.set("SEQUENCE_MAP", self.sequence_map)
         return
 
-    def assign_pre_sequence(self, sequence_definition: str):
+    def add_pre_sequence(self, sequence_definition: str):
         self.b.set("PRE_SEQUENCE", sequence_definition)
         return
 
@@ -93,7 +93,7 @@ class TestContainer(object):
         self.b.set("SEQUENCE_MAP", self.sequence_map)
         return
 
-    def assign_pre_sequence(self, sequence_definition: str):
+    def add_pre_sequence(self, sequence_definition: str):
         self.b.set("PRE_SEQUENCE", sequence_definition)
         return
 
