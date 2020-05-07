@@ -233,24 +233,51 @@ class TestConfig(unittest.TestCase):
         station = gen.add_station("PCBST")
         station.add_pre_sequence("hello.world")
         container = station.add_container("UUT00")
-
+        # 1
         value = pickle.loads(self.r["PCBST:PRE_SEQUENCE"])
         self.assertEqual(value, "hello.world")
         value = pickle.loads(self.r["PCBST:UUT00:PRE_SEQUENCE"])
         self.assertEqual(value, "hello.world")
-
+        # 2
         container.add_pre_sequence("good.job")
         value = pickle.loads(self.r["PCBST:UUT00:PRE_SEQUENCE"])
         self.assertEqual(value, "good.job")
-
-
         return
 
     def test_add_container_sequence_map(self):
         """
+        Create Station "PCBST"
+        Create Container "UUT00"
+        1. add sequence map "TEST1"/"test.case1" to station, container will inherit it.
+        2. add sequence map "test2"/"test.case2" to container, it could be found in ["PCBST:UUT00:SEQUENCE_MAP"]
+        3. add sequence map "TEST1"/"test.case3" to container, it could be found in ["PCBST:UUT00:SEQUENCE_MAP"]
         :return:
         """
-        pass
+        gen = config.TestConfiguration()
+        station = gen.add_station("PCBST")
+        station.add_sequence_map("TEST1", "test.case1")
+        container = station.add_container("UUT00")
+        # 1
+        value = pickle.loads(self.r["PCBST:SEQUENCE_MAP"])
+        self.assertIn("TEST1", value)
+        self.assertEqual(value.get("TEST1"), "test.case1")
+        value = pickle.loads(self.r["PCBST:UUT00:SEQUENCE_MAP"])
+        self.assertIn("TEST1", value)
+        self.assertEqual(value.get("TEST1"), "test.case1")
+        # 2
+        container.add_sequence_map("test2", "test.case2")
+        value = pickle.loads(self.r["PCBST:UUT00:SEQUENCE_MAP"])
+        self.assertIn("TEST1", value)
+        self.assertEqual(value.get("TEST1"), "test.case1")
+        self.assertIn("test2", value)
+        self.assertEqual(value.get("test2"), "test.case2")
+        # 3
+        container.add_sequence_map("TEST1", "test.case3")
+        self.assertIn("TEST1", value)
+        self.assertEqual(value.get("TEST1"), "test.case3")
+        self.assertIn("test2", value)
+        self.assertEqual(value.get("test2"), "test.case2")
+        return
 
     def test_add_container_sync_group(self):
         """
