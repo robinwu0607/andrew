@@ -374,7 +374,7 @@ class TestConfig(unittest.TestCase):
         self.assertIn("PCBST:UUT00:NAME3", value)
         self.assertEqual(value.get("PCBST:UUT00:NAME3"), {"protocol": "telnet", "port": 22, "host": "web2"})
         # 3
-        container = station.add_container("UUT00")
+        container = station.add_container("UUT01")
         container.add_connection("name4", shared_conn="name1")
         value = pickle.loads(self.r["PCBST:UUT01:CONNECTION_LIST"])
         self.assertIn("PCBST:UUT01:NAME4", value)
