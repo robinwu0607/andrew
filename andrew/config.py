@@ -1,4 +1,5 @@
 import re
+from typing import List
 from andrew import broker
 
 checker = re.compile("^[a-zA-Z0-9_]+$")
@@ -43,7 +44,7 @@ class TestStation(object):
         self.b.set("PRE_SEQUENCE", sequence_definition)
         return
 
-    def add_sync_group(self, name: str, container_list: list):
+    def add_sync_group(self, name: str, container_list: List[str]):
         self.sync_group_map.update({name: container_list})
         self.b.set("SYNC_GROUP", self.sync_group_map)
         return
