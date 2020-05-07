@@ -45,8 +45,8 @@ class TestBroker(unittest.TestCase):
         self.b1.append("UUT00", "hello")
         self.b.append("UUT00", ",")
         self.b.append("UUT00", "world")
-        self.assertEqual(self.b.get_append("TEST:UUT00"), "hello,world")
-        self.assertEqual(self.b1.get_append("TEST1:UUT00"), "hello")
+        self.assertEqual(self.b.get_append("UUT00"), "hello,world")
+        self.assertEqual(self.b1.get_append("UUT00"), "hello")
         return
 
     def test_get(self):
