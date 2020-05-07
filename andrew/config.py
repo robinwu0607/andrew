@@ -18,7 +18,7 @@ class TestConfiguration(object):
         station_name = name.upper()
         if not checker.match(station_name):
             raise Exception("Station name should not contain special characters - [{}]".format(station_name))
-        self.station_map.setdefault(station_name, False)
+        self.station_map.update({station_name: False})
         self.b.set("STATION_LIST", self.station_map)
         return TestStation(station_name)
 
@@ -35,7 +35,7 @@ class TestStation(object):
         return
 
     def add_sequence_map(self, name: str, sequence_definition: str):
-        self.sequence_map.setdefault(name, sequence_definition)
+        self.sequence_map.update({name: sequence_definition})
         self.b.set("SEQUENCE_MAP", self.sequence_map)
         return
 
@@ -44,12 +44,12 @@ class TestStation(object):
         return
 
     def add_sync_group(self, name: str, container_list: list):
-        self.sync_group_map.setdefault(name, container_list)
+        self.sync_group_map.update({name: container_list})
         self.b.set("SYNC_GROUP", self.sync_group_map)
         return
 
     def add_configuration_data(self, key: str, value):
-        self.configuration_data_map.setdefault(key, value)
+        self.configuration_data_map.update({key: value})
         self.b.set("CONFIGURATION_DATA", self.configuration_data_map)
         return
 
@@ -63,8 +63,8 @@ class TestStation(object):
             raise Exception("protocol should be in telnet/ssh/dummy")
 
         connection_name = ":".join([self.station_name, name]).upper()
-        connection_config.setdefault("shared_conn", connection_name)
-        self.connection_map.setdefault(name.upper(), connection_config)
+        connection_config.update({"shared_conn": connection_name})
+        self.connection_map.update({name.upper(): connection_config})
         self.b.set("CONNECTION_LIST", self.connection_map)
         return
 
@@ -72,7 +72,7 @@ class TestStation(object):
         if not checker.match(name):
             raise Exception("container name should not contain special characters - [{}]".format(name))
         container_name = ":".join([self.station_name, name]).upper()
-        self.container_map.setdefault(container_name, disabled)
+        self.container_map.update({container_name: disabled})
         self.b.set("CONTAINER_LIST", self.container_map)
         return TestContainer(self.station_name, name)
 
@@ -89,7 +89,7 @@ class TestContainer(object):
         self.connection_map = dict()
 
     def add_sequence_map(self, name: str, sequence_definition: str):
-        self.sequence_map.setdefault(name, sequence_definition)
+        self.sequence_map.update({name: sequence_definition})
         self.b.set("SEQUENCE_MAP", self.sequence_map)
         return
 
@@ -98,7 +98,7 @@ class TestContainer(object):
         return
 
     def add_configuration_data(self, key: str, value):
-        self.configuration_data_map.setdefault(key, value)
+        self.configuration_data_map.update({key, value})
         self.b.set("CONFIGURATION_DATA", self.configuration_data_map)
         return
 
@@ -114,14 +114,14 @@ class TestContainer(object):
         if shared_conn:
             for conn, conf in self.station_connection_map.items():
                 if conn == shared_conn:
-                    self.connection_map.setdefault(connection_name, conf)
+                    self.connection_map.update({connection_name: conf})
                     break
             else:
                 raise Exception("Could not find shared_conn [{}] from Station".format(shared_conn))
         else:
             if connection_config.get("protocol") not in ["telnet", "ssh", "dummy"]:
                 raise Exception("protocol should be in telnet/ssh/dummy")
-            self.connection_map.setdefault(connection_name, connection_config)
+            self.connection_map.update({connection_name: connection_config})
 
         self.b.set("CONNECTION_LIST", self.connection_map)
         return
