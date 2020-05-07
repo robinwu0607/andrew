@@ -118,16 +118,17 @@ class TestContainer(object):
         shared_conn = connection_config.get("shared_conn", None)
         connection_name = ":".join([self.station_name, self.container_name, name]).upper()
         if shared_conn:
+            shared_conn1 = ":".join([self.station_name, shared_conn.upper()])
             for conn, conf in self.station_connection_map.items():
-                if conn == shared_conn:
-                    self.connection_map.update({connection_name.upper(): conf})
+                if conn == shared_conn1:
+                    self.connection_map.update({connection_name: conf})
                     break
             else:
-                raise Exception("Could not find shared_conn [{}] from Station".format(shared_conn))
+                raise Exception("Could not find shared_conn [{}] from Station".format(shared_conn1))
         else:
             if connection_config.get("protocol") not in ["telnet", "ssh", "dummy"]:
                 raise Exception("protocol should be in telnet/ssh/dummy")
-            self.connection_map.update({connection_name.upper(): connection_config})
+            self.connection_map.update({connection_name: connection_config})
 
         self.b.set("CONNECTION_LIST", self.connection_map)
         return
