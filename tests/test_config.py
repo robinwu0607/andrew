@@ -403,6 +403,9 @@ class TestConfig(unittest.TestCase):
             for conn in ["UUT", "POWER"]:
                 container.add_connection(conn, protocol="telnet", port=22, host="web2")
 
+        value = pickle.loads(self.r["CONFIGURATION:STATION_LIST"])
+        self.assertEqual(value, {"PCBST": False, "PCBP2": False})
+        #
         value = pickle.loads(self.r["PCBST:CONTAINER_LIST"])
         self.assertEqual(value, {"PCBST:UUT00": False, "PCBST:UUT01": False})
         value = pickle.loads(self.r["PCBP2:CONTAINER_LIST"])
