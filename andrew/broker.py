@@ -24,7 +24,8 @@ class Broker(object):
         return
 
     def get_append(self, key: str):
-        return self.db.get(name=":".join([self.name, key])).decode('utf-8')
+        data = self.db.get(name=":".join([self.name, key]))
+        return data.decode('utf-8') if data else ""
 
     def set(self, key: str, value, expire=None):
         while not self.db.setnx(self.name + '______redis', 'LOCK'):
