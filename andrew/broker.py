@@ -29,19 +29,23 @@ class Broker(object):
         self.db.set(name=":".join([self.name, key]), value=pickle.dumps(value), ex=expire)
         del self.db[self.name + '______redis']
 
-    def get_str(self, key: str):
+    def get(self, key: str):
+        value = self.db.get(name=":".join([self.name, key]))
+        return pickle.loads(value)
+
+    def get_str(self, key: str) -> str:
         value = self.db.get(name=":".join([self.name, key]))
         return pickle.loads(value) if value else ""
 
-    def get_list(self, key: str):
+    def get_list(self, key: str) -> list:
         value = self.db.get(name=":".join([self.name, key]))
         return pickle.loads(value) if value else []
 
-    def get_dict(self, key: str):
+    def get_dict(self, key: str) -> dict:
         value = self.db.get(name=":".join([self.name, key]))
         return pickle.loads(value) if value else {}
 
-    def get_keys(self):
+    def get_keys(self) -> list:
         return self.db.keys()
 
     def delete(self, key: str):
