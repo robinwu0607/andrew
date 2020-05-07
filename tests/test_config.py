@@ -178,23 +178,23 @@ class TestConfig(unittest.TestCase):
         # 1
         station.add_connection("name1", protocol="dummy", port=22, host="web1")
         value = pickle.loads(self.r["PCBST:CONNECTION_LIST"])
-        self.assertIn("NAME1", value)
-        self.assertEqual(value.get("NAME1"), {"protocol": "dummy", "port": 22, "host": "web1", "shared_conn": "PCBST:NAME1"})
+        self.assertIn("PCBST:NAME1", value)
+        self.assertEqual(value.get("PCBST:NAME1"), {"protocol": "dummy", "port": 22, "host": "web1", "shared_conn": "PCBST:NAME1"})
         # 2
         station.add_connection("name2", protocol="telnet", port=22, host="web2")
         value = pickle.loads(self.r["PCBST:CONNECTION_LIST"])
-        self.assertIn("NAME1", value)
-        self.assertEqual(value.get("NAME1"), {"protocol": "dummy", "port": 22, "host": "web1", "shared_conn": "PCBST:NAME1"})
-        self.assertIn("NAME2", value)
-        self.assertEqual(value.get("NAME2"), {"protocol": "telnet", "port": 22, "host": "web2", "shared_conn": "PCBST:NAME2"})
+        self.assertIn("PCBST:NAME1", value)
+        self.assertEqual(value.get("PCBST:NAME1"), {"protocol": "dummy", "port": 22, "host": "web1", "shared_conn": "PCBST:NAME1"})
+        self.assertIn("PCBST:NAME2", value)
+        self.assertEqual(value.get("PCBST:NAME2"), {"protocol": "telnet", "port": 22, "host": "web2", "shared_conn": "PCBST:NAME2"})
         # 3
         station.add_connection("name1", protocol="ssh", port=22, host="web3")
         value = pickle.loads(self.r["PCBST:CONNECTION_LIST"])
         # print(value)
-        self.assertIn("NAME1", value)
-        self.assertEqual(value.get("NAME1"), {"protocol": "ssh", "port": 22, "host": "web3", "shared_conn": "PCBST:NAME1"})
-        self.assertIn("NAME2", value)
-        self.assertEqual(value.get("NAME2"), {"protocol": "telnet", "port": 22, "host": "web2", "shared_conn": "PCBST:NAME2"})
+        self.assertIn("PCBST:NAME1", value)
+        self.assertEqual(value.get("PCBST:NAME1"), {"protocol": "ssh", "port": 22, "host": "web3", "shared_conn": "PCBST:NAME1"})
+        self.assertIn("PCBST:NAME2", value)
+        self.assertEqual(value.get("PCBST:NAME2"), {"protocol": "telnet", "port": 22, "host": "web2", "shared_conn": "PCBST:NAME2"})
         return
 
     def test_add_container(self):
@@ -359,19 +359,19 @@ class TestConfig(unittest.TestCase):
         container = station.add_container("UUT00")
         # 1
         value = pickle.loads(self.r["PCBST:CONNECTION_LIST"])
-        self.assertIn("NAME1", value)
-        self.assertEqual(value.get("NAME1"), {"protocol": "dummy", "port": 22, "host": "web1", "shared_conn": "PCBST:NAME1"})
+        self.assertIn("PCBST:NAME1", value)
+        self.assertEqual(value.get("PCBST:NAME1"), {"protocol": "dummy", "port": 22, "host": "web1", "shared_conn": "PCBST:NAME1"})
         container.add_connection("name2", shared_conn="name1")
         value = pickle.loads(self.r["PCBST:UUT00:CONNECTION_LIST"])
-        self.assertIn("NAME2", value)
-        self.assertEqual(value.get("NAME2"), {"protocol": "dummy", "port": 22, "host": "web1", "shared_conn": "PCBST:NAME1"})
+        self.assertIn("PCBST:UUT00:NAME2", value)
+        self.assertEqual(value.get("PCBST:UUT00:NAME2"), {"protocol": "dummy", "port": 22, "host": "web1", "shared_conn": "PCBST:NAME1"})
         # 2
         container.add_connection("name3", protocol="telnet", port=22, host="web2")
         value = pickle.loads(self.r["PCBST:UUT00:CONNECTION_LIST"])
-        self.assertIn("NAME2", value)
-        self.assertEqual(value.get("NAME2"), {"protocol": "dummy", "port": 22, "host": "web1", "shared_conn": "PCBST:NAME1"})
-        self.assertIn("NAME3", value)
-        self.assertEqual(value.get("NAME3"), {"protocol": "telnet", "port": 22, "host": "web2"})
+        self.assertIn("PCBST:UUT00:NAME2", value)
+        self.assertEqual(value.get("PCBST:UUT00:NAME2"), {"protocol": "dummy", "port": 22, "host": "web1", "shared_conn": "PCBST:NAME1"})
+        self.assertIn("PCBST:UUT00:NAME3", value)
+        self.assertEqual(value.get("PCBST:UUT00:NAME3"), {"protocol": "telnet", "port": 22, "host": "web2"})
         return
 
 

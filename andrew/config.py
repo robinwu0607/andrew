@@ -65,7 +65,7 @@ class TestStation(object):
 
         connection_name = ":".join([self.station_name, name]).upper()
         connection_config.update({"shared_conn": connection_name})
-        self.connection_map.update({name.upper(): connection_config})
+        self.connection_map.update({connection_name: connection_config})
         self.b.set("CONNECTION_LIST", self.connection_map)
         return
 
