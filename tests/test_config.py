@@ -188,7 +188,7 @@ class TestConfig(unittest.TestCase):
         self.assertIn("NAME2", value)
         self.assertEqual(value.get("NAME2"), {"protocol": "telnet", "port": 22, "host": "web2", "shared_conn": "PCBST:NAME2"})
         # 3
-        station.add_sync_group("name1", protocol="ssh", port=22, host="web3")
+        station.add_connection("name1", protocol="ssh", port=22, host="web3")
         value = pickle.loads(self.r["PCBST:CONNECTION_LIST"])
         # print(value)
         self.assertIn("NAME1", value)
