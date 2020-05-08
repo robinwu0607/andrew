@@ -83,7 +83,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/tmp/logs/'
 
-ASGI_APPLICATION = '.routing.application'
+ASGI_APPLICATION = 'andrew.web.routing.application'
 
 # Redis
 CHANNEL_LAYERS = {
