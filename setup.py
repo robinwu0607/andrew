@@ -50,12 +50,16 @@ setup(
         'Programming Language :: Python :: 3.7',
     ],
     keywords='Paramiko Fabric Ansible',  # Optional
-    packages=find_packages(exclude=['docs', 'tests']),  # Required
+    packages=find_packages("andrew"),  # Required
+    package_dir={"": "andrew"},
     include_package_data=True,
+    package_data={
+        "web": ["gui/*"],
+    },
     platforms='Linux',
     python_requires='>=3.6.5',
     install_requires=requirement_list,  # Optional
-    data_files=data_files,  # Optional
+    # data_files=data_files,  # Optional
 )
 
 # python3 setup.py bdist_wheel
