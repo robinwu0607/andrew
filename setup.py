@@ -19,7 +19,6 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
     requirement_list = f.read().splitlines()
 
-print(here)
 data_files = []
 for root, _, files in walk(path.join(here, 'andrew/web/gui')):
     print(root)
@@ -29,7 +28,7 @@ for root, _, files in walk(path.join(here, 'andrew/web/gui')):
         if path.isfile(path.join(root, f)):
             data_files.append(f)
 
-print(data_files)
+# print(data_files)
 
 setup(
     name='andrew',  # Required
@@ -56,7 +55,7 @@ setup(
     platforms='Linux',
     python_requires='>=3.6.5',
     install_requires=requirement_list,  # Optional
-    # data_files=data_files,  # Optional
+    data_files=data_files,  # Optional
 )
 
 # python3 setup.py bdist_wheel
