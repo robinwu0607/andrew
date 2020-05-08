@@ -26,7 +26,7 @@ for root, _, files in walk(path.join(here, 'andrew/web/gui')):
         if '.gitignore' in f:
             continue
         if path.isfile(path.join(root, f)):
-            data_files.append(path.join(root, f).replace(here, ""))
+            data_files.append(path.join(root, f).replace(here, "").replace("/andrew/web/", ""))
 
 print(data_files)
 
@@ -54,7 +54,7 @@ setup(
     package_dir={"": "andrew"},
     include_package_data=True,
     package_data={
-        "web": ["gui/*"],
+        "web": data_files,
     },
     platforms='Linux',
     python_requires='>=3.6.5',
