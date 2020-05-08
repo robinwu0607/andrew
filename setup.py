@@ -20,7 +20,7 @@ with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
     requirement_list = f.read().splitlines()
 
 data_files = []
-for root, _, files in walk(path.join(here, 'andrew')):
+for root, _, files in walk(path.join(here, 'andrew/web/gui')):
     if '.git' in root:
         continue
     # data_files.append(f for f in listdir(root) if path.isfile(path.join(root, f)))
@@ -30,7 +30,7 @@ for root, _, files in walk(path.join(here, 'andrew')):
         if path.isfile(path.join(root, f)):
             data_files.append(f)
 
-# print(data_files)
+print(data_files)
 
 setup(
     name='andrew',  # Required
