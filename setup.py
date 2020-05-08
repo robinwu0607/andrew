@@ -19,6 +19,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
     requirement_list = f.read().splitlines()
 
+print(here)
 data_files = []
 for root, _, files in walk(path.join(here, 'andrew/web/gui')):
     if '.git' in root:
