@@ -3,7 +3,10 @@ import os
 import sys
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
+    path_ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    print(path_)
+    sys.path.append(path_)
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "andrew.web.settings")
     try:
         from django.core.management import execute_from_command_line
     except ImportError:
