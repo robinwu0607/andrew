@@ -35,7 +35,7 @@ setup(
     version='0.0.1',  # Required
     description='Andrew - Paramiko based Remote Execution',  # Optional
     long_description=long_description,  # Optional
-    url='https://github.com/',  # Optional
+    url='https://github.com/robinwu0607',  # Optional
     author='Robin Wu',  # Optional
     author_email='robinwu.qw@gmail.com',  # Optional
     classifiers=[  # Optional
