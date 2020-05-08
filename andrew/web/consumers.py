@@ -11,7 +11,7 @@ DATE_FMT = '%a %d %b %Y %H:%M:%S'
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.DEBUG)
 formatter = logging.Formatter(fmt=FMT, datefmt=DATE_FMT)
-rotating_file_handler = logging.handlers.RotatingFileHandler(filename="/opt/logs/tmp/manual/debug.log",
+rotating_file_handler = logging.handlers.RotatingFileHandler(filename="/tmp/andrew.log",
                                                              mode='a',
                                                              maxBytes=1024 * 1024 * 1,
                                                              backupCount=10,
