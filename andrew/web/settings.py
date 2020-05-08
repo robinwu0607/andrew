@@ -58,7 +58,7 @@ TEMPLATES = [
     }
 ]
 
-WSGI_APPLICATION = '.wsgi.application'
+WSGI_APPLICATION = 'web.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -83,7 +83,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/tmp/logs/'
 
-ASGI_APPLICATION = 'andrew.web.routing.application'
+ASGI_APPLICATION = 'web.routing.application'
 
 # Redis
 CHANNEL_LAYERS = {
