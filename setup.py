@@ -21,12 +21,12 @@ with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
 
 data_files = []
 for root, _, files in walk(path.join(here, 'andrew/web/gui')):
-    print(root)
+    # print(root)
     for f in listdir(root):
         if '.gitignore' in f:
             continue
         if path.isfile(path.join(root, f)):
-            data_files.append(f)
+            data_files.append(path.join(root, f))
 
 # print(data_files)
 
