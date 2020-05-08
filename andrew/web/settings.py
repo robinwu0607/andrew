@@ -40,7 +40,7 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-ROOT_URLCONF = 'andrew.web.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATES = [
     {
@@ -58,7 +58,7 @@ TEMPLATES = [
     }
 ]
 
-WSGI_APPLICATION = 'andrew.web.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 DATABASES = {
     'default': {
@@ -83,7 +83,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/tmp/logs/'
 
-ASGI_APPLICATION = 'andrew.web.routing.application'
+ASGI_APPLICATION = 'routing.application'
 
 # Redis
 CHANNEL_LAYERS = {
