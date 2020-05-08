@@ -21,7 +21,7 @@ with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
 
 print(here)
 data_files = []
-for root, _, files in walk(path.join(here, 'andrew/web/')):
+for root, _, files in walk(path.join(here, 'andrew/web/gui')):
     print(root)
     for f in listdir(root):
         if '.gitignore' in f:
