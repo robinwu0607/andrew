@@ -28,7 +28,7 @@ for root, _, files in walk(path.join(here, 'andrew/web/gui')):
         if path.isfile(path.join(root, f)):
             data_files.append(path.join(root, f).replace(here, "").replace("/andrew/web/", ""))
 
-print(data_files)
+# print(data_files)
 
 setup(
     name='andrew',  # Required
