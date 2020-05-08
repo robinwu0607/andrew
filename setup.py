@@ -26,9 +26,9 @@ for root, _, files in walk(path.join(here, 'andrew/web/gui')):
         if '.gitignore' in f:
             continue
         if path.isfile(path.join(root, f)):
-            data_files.append(path.join(root, f))
+            data_files.append(path.join(root, f).replace(here, ""))
 
-# print(data_files)
+print(data_files)
 
 setup(
     name='andrew',  # Required
