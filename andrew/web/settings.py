@@ -46,7 +46,7 @@ ROOT_URLCONF = 'andrew.web.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["gui/"],
+        'DIRS': ["gui"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,7 +83,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = '/tmp/logs/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'gui/static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'gui')]
+print(STATICFILES_DIRS)
 
 ASGI_APPLICATION = 'andrew.web.routing.application'
 
