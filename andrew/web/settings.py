@@ -45,7 +45,7 @@ ROOT_URLCONF = 'andrew.web.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["gui"],
+        'DIRS': ["web/gui"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
