@@ -86,7 +86,7 @@ STATIC_ROOT = '/tmp/logs/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'gui/static/')]
 print(STATICFILES_DIRS)
 
-ASGI_APPLICATION = '.routing.application'
+ASGI_APPLICATION = 'routing.application'
 
 # Redis
 CHANNEL_LAYERS = {
