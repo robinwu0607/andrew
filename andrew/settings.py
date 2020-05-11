@@ -41,7 +41,7 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = '.urls'
 
 TEMPLATES = [
     {
@@ -59,7 +59,7 @@ TEMPLATES = [
     }
 ]
 
-WSGI_APPLICATION = 'wsgi.application'
+WSGI_APPLICATION = '.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -86,7 +86,7 @@ STATIC_ROOT = '/tmp/logs/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'gui/static/')]
 print(STATICFILES_DIRS)
 
-ASGI_APPLICATION = 'routing.application'
+ASGI_APPLICATION = '.routing.application'
 
 # Redis
 CHANNEL_LAYERS = {
