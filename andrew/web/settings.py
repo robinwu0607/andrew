@@ -83,7 +83,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = '/tmp/logs/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'gui')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'gui/static/')]
 print(STATICFILES_DIRS)
 
 ASGI_APPLICATION = 'andrew.web.routing.application'
